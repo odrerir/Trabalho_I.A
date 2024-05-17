@@ -4,11 +4,13 @@ interface Neighbor {
 }
 
 export class Vertex {
+    name: string;
     x: number;
     y: number;
     neighbors: Neighbor[];
 
-    constructor(x: number, y: number) {
+    constructor(name: string, x: number, y: number) {
+        this.name = name;
         this.x = x;
         this.y = y;
         this.neighbors = [];
