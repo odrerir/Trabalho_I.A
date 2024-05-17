@@ -32,7 +32,7 @@ export class AStar {
 
     public findPath(start: Vertex, goal: Vertex): boolean {
         this.gScore.set(start, 0);
-        this.fScore.set(start, Vertex.euclideanDistance(start, goal));
+        this.fScore.set(start, start.heuristic);
         this.cameFrom.set(start, null);
         this.openSet.add(start);
 
@@ -60,7 +60,7 @@ export class AStar {
 
                 this.cameFrom.set(neighbor, current);
                 this.gScore.set(neighbor, tentativeGScore);
-                this.fScore.set(neighbor, tentativeGScore + Vertex.euclideanDistance(neighbor, goal));
+                this.fScore.set(neighbor, tentativeGScore + neighbor.heuristic);
             });
         }
 
