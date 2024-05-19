@@ -37,10 +37,16 @@ const start = vertices.G;
 const goal = vertices.K;
 
 if (start && goal) {
-    // Instanciar o algoritmo A* e encontrar o caminho
+    // Instancia o algoritmo A* e encontra o caminho
     const aStar = new AStar();
-    const pathFound = aStar.findPath(start, goal);
-    console.log(pathFound ? "Caminho encontrado!" : "Caminho não encontrado.");
+    const { pathFound, path } = aStar.findPath(start, goal);
+
+    if (pathFound) {
+        console.log("Caminho encontrado!");
+        console.log("Caminho percorrido: ", path.map(vertex => vertex.name).join(" -> "));
+    } else {
+        console.log("Caminho não encontrado.");
+    }
 } else {
     console.log("Vértices de início ou fim não encontrados.");
 }

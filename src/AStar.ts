@@ -30,7 +30,16 @@ export class AStar {
         return lowest;
     }
 
-    public findPath(start: Vertex, goal: Vertex): boolean {
+    private reconstructPath(current: Vertex): Vertex[] {
+        const totalPath = [current];
+        while (this.cameFrom.get(current) !== null) {
+            current = this.cameFrom.get(current)!;
+            totalPath.unshift(current);
+        }
+        return totalPath;
+    }
+
+    public findPath(start: Vertex, goal: Vertex): { pathFound: boolean, path: Vertex[] } {
         this.gScore.set(start, 0);
         this.fScore.set(start, start.heuristic);
         this.cameFrom.set(start, null);
@@ -39,7 +48,7 @@ export class AStar {
         while (this.openSet.size > 0) {
             const current = this.getLowestFScoreVertex();
             if (current === goal) {
-                return true;  // Path found
+                return { pathFound: true, path: this.reconstructPath(current!) };
             }
 
             this.openSet.delete(current!);
@@ -64,6 +73,6 @@ export class AStar {
             });
         }
 
-        return false;  // No path found
+        return { pathFound: false, path: [] };
     }
 }
