@@ -39,11 +39,12 @@ const goal = vertices.K;
 if (start && goal) {
     // Instancia o algoritmo A* e encontra o caminho
     const aStar = new AStar();
-    const { pathFound, path } = aStar.findPath(start, goal);
+    const { pathFound, path, totalCost } = aStar.findPath(start, goal);
 
     if (pathFound) {
         console.log("Caminho encontrado!");
         console.log("Caminho percorrido: ", path.map(vertex => vertex.name).join(" -> "));
+        console.log("Custo total: ", totalCost);
     } else {
         console.log("Caminho não encontrado.");
     }

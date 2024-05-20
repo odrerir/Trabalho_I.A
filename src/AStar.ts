@@ -15,19 +15,22 @@ export class AStar {
         this.cameFrom = new Map();
     }
 
-    private getLowestFScoreVertex(): Vertex | undefined {
-        let lowest: Vertex | undefined;
+    private getLowestFScoreVertex(): Vertex {
+        let lowest: Vertex;
         let lowestFScore = Infinity;
 
         this.openSet.forEach(vertex => {
+            // Obtém o fScore do vértice atual. Se não houver um fScore definido, usa Infinity.
             const score = this.fScore.get(vertex) ?? Infinity;
+            // Se o fScore do vértice atual for menor que o menor fScore encontrado até agora,
+            // atualiza o menor fScore e o vértice correspondente.
             if (score < lowestFScore) {
                 lowestFScore = score;
                 lowest = vertex;
             }
         });
-
-        return lowest;
+    
+        return lowest; // Retorna o vértice com o menor fScore encontrado.
     }
 
     private reconstructPath(current: Vertex): Vertex[] {
@@ -39,7 +42,7 @@ export class AStar {
         return totalPath;
     }
 
-    public findPath(start: Vertex, goal: Vertex): { pathFound: boolean, path: Vertex[] } {
+    public findPath(start: Vertex, goal: Vertex): { pathFound: boolean, path: Vertex[], totalCost: number } {
         this.gScore.set(start, 0);
         this.fScore.set(start, start.heuristic);
         this.cameFrom.set(start, null);
@@ -48,7 +51,9 @@ export class AStar {
         while (this.openSet.size > 0) {
             const current = this.getLowestFScoreVertex();
             if (current === goal) {
-                return { pathFound: true, path: this.reconstructPath(current!) };
+                const path = this.reconstructPath(current!);
+                const totalCost = this.gScore.get(goal) ?? Infinity;
+                return { pathFound: true, path, totalCost };
             }
 
             this.openSet.delete(current!);
@@ -73,6 +78,6 @@ export class AStar {
             });
         }
 
-        return { pathFound: false, path: [] };
+        return { pathFound: false, path: [], totalCost: 0 };
     }
 }
